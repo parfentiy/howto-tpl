@@ -3,6 +3,9 @@ title: Настройка нового сервера Ubuntu
 tags:
   - Linux
 variables:
+  main_domain:
+    description: Ваш основной домен
+    example: ivanov_domain.ru
   VM_name:
     description: Название проекта
     example: project-prd
@@ -18,11 +21,16 @@ variables:
     description: Внешний IP-адрес нового сервера
     required: true
     example: 31.10.55.66
+  VM_ip:
+    description: IP-адрес новой виртуалки
+    required: true
+    example: 10.10.3.33
 
 ---
 
 # Предварительно
 
+- [ ] Заполняем имя вашего основного домена в <var>main_domain</var>
 - [ ] Заполняем имя будущей виртуальной машины в <var>VM_name</var>
 - [ ] Если ОС уже установлена, то переходим к разделу "Установка Nginx"
 
@@ -138,6 +146,52 @@ variables:
 
   ```
   apt update
+  ```
+
+- [ ] Выходим из виртуалки
+
+  ```
+  exit
+  ```
+
+- [ ] Получаем ip-адрес новой виртуалки
+
+  ```
+  lxc list
+  ```
+
+- [ ] Заполняем ip-адрес <var>VM_ip</var>
+
+# Донастраиваем Nginx 
+
+- [ ] В ЛК Хостинг-провайдера добавляем А-запись на субдомен, указывая его параметры:
+  - имя: 
+    ```
+    $VM_name.$main_domain
+    ```
+  - ip-адрес: 
+    ```
+    $server_ip
+    ```
+
+- [ ] Создаем новый конфиг для виртуалки
+
+  ```
+  echo '
+  server {
+    server_name $VM_name.$main_domain;
+    location / {
+      proxy_pass http://$VM_ip;
+      include proxy_params;
+    }
+  }
+  ' > /etc/nginx/sites-enabled/$VM_name.conf
+  ```
+
+- [ ] Перезапускаем Nginx
+
+  ```
+  service nginx reload
   ```
 
 - [ ] Проверяем как оно [работает](http://)
