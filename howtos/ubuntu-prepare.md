@@ -6,7 +6,7 @@ variables:
   main_domain:
     description: Ваш основной домен
     required: true
-    example: ivanov_domain.ru
+    default: parfentiy.site
   VM_name:
     description: Название проекта
     required: true
@@ -18,11 +18,11 @@ variables:
   server_local_ip:
     description: Внутренний IP-адрес нового сервера
     required: true
-    example: 192.168.5.95
+    default: 192.168.5.95
   server_ip:
     description: Внешний IP-адрес нового сервера
     required: true
-    example: 31.10.55.66
+    default: 31.10.65.40
   VM_ip:
     description: IP-адрес новой виртуалки
     required: true
