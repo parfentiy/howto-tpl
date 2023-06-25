@@ -1,13 +1,15 @@
 ---
-title: Настройка нового сервера Ubuntu 
+title: Настройка нового сервера Ubuntu с добавлением нового виртуального контейнера для проекта
 tags:
   - Linux
 variables:
   main_domain:
     description: Ваш основной домен
+    required: true
     example: ivanov_domain.ru
   VM_name:
     description: Название проекта
+    required: true
     example: project-prd
   ubuntu_first_user:
     description: Пользователь, заданный при установке ОС Ubuntu
