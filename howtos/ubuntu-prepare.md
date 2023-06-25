@@ -3,38 +3,38 @@ title: Настройка нового сервера Ubuntu
 tags:
   - Linux
 variables:
+  VM_name:
+    description: Название проекта
+    example: project-prd
   ubuntu_first_user:
     description: Пользователь, заданный при установке ОС Ubuntu
     required: true
     default: peter
-  server_ip:
-    description: Внешний IP-адрес нового сервера
-    required: true
-    example: 31.10.55.66
-  VM_name:
-    description: Название проекта
-    example: project-prd
   server_local_ip:
     description: Внутренний IP-адрес нового сервера
     required: true
     example: 192.168.5.95
+  server_ip:
+    description: Внешний IP-адрес нового сервера
+    required: true
+    example: 31.10.55.66
 
 ---
 
 # Предварительно
 
-- [ ] Заполняем <var>VM_name</var>
+- [ ] Заполняем имя будущей виртуальной машины в <var>VM_name</var>
 - [ ] Если ОС уже установлена, то переходим к разделу "Установка Nginx"
 
 - [ ] Устанавливаем чистую ОС на чистый диск отдельного компьютера
 - [ ] Логинимся в систему под юзером, введенным при установке ОС
-- [ ] Заполняем <var>ubuntu_first_user</var>
+- [ ] Заполняем название первого пользователя ОС в <var>ubuntu_first_user</var>
 - [ ] На новом сервере получаем локальный его ip-адрес
 
   ```
   ip a
   ```
-- [ ] Заполняем <var>server_local_ip</var>
+- [ ] Заполняем полученный локальный ip-адрес в <var>server_local_ip</var>
 
 - [ ] Переходим под root
 
@@ -82,12 +82,12 @@ variables:
 
 ![Изображение](https://howto.parfentiy.site/nginx_started.png "Это успех")
 
-# Подключаемся к серверу по SSH с другого компьютера
+# Подключаемся к серверу по SSH с другого компьютера через его командную строку
 
 - [ ] Удаляем лишние ключи, если были
 
   ```
-  ssh-keygen -R $server_ip
+  ssh-keygen -R $server_local_ip
   ```
 
 - [ ] Подключаемся по SSH к корневому серверу
@@ -96,6 +96,21 @@ variables:
   ssh $ubuntu_first_user@$server_local_ip
   ```
 
+- [ ] Переключаемся на root'a
 
+  ```
+  sudo su
+  ```
+
+# Поднимаем виртуальную машину
+
+- [ ] Первая инициализация LXD (если уже было проделано, переходим к следующему пункту)
+
+  ```
+  lxd init
+  ```
+** ВАЖНО! При задании параметров LXD все параметры указывать по дефолту, кроме:
+ - Хранилище указываем: dir
+ - IPV6 указываем: none **
 
 - [ ] Проверяем как оно [работает](http://)
