@@ -6,7 +6,11 @@ variables:
   server_name:
     description: Адрес сервера где будет настройка производиться
     required: true
-    example: server123.reg.ru
+    default: 192.168.5.95
+  VM_name:
+    description: Название виртуальной машины
+    required: true
+    example: project
   repository_url:
     description: Адрес где репозиторий находится
     default: https://github.com/Bubujka/howto.git
@@ -26,12 +30,8 @@ variables:
 
 # Предварительно
 - [ ] Заполняем <var>server_name</var>
+- [ ] Заполняем <var>VM_name</var>
 - [ ] Заполняем <var>repository_url</var>
-- [ ] Проверяем что есть доступ к серверу
-
-  ```
-  ssh root@$server_name
-  ```
 
 # Основная настройка
 
@@ -39,6 +39,11 @@ variables:
 
   ```
   ssh root@$server_name
+  ```
+- [ ] Заходим в виртуалку
+
+  ```
+  lxc exec $VM_name -- bash  
   ```
 
 - [ ] Создаём пользователя
@@ -212,5 +217,18 @@ variables:
   cd ~/project
   npm run build
   ```
+
+- [ ] Редактируем .env
+
+  ```
+  cd ~/project
+  vi .env
+  ```
+  В APP_NAME пишем название проекта
+  В APP_ENV пишем production
+  В APP_DEBUG пишем false
+  В APP_URL затираем любой адрес, указанный ранее
+  Настраиваем доступ к БД
+  Сохраняем файл
 
 - [ ] Проверяем как оно [работает](http://$server_name)
