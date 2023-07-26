@@ -24,9 +24,6 @@ variables:
   site:
     description: Адрес сайта с проектом (без http:// или https://)
     example: myproject.mysite.ru 
-  NODEJS_VERSION:
-    description: Версия nodejs что нужна
-    default: 16
 
 ---
 
