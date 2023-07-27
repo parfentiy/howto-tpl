@@ -49,7 +49,7 @@ variables:
   ```
     php artisan make:model $second_model -m
   ```
-- [ ] Заполняем название созданной таблицы <var>main_table</var>
+- [ ] Заполняем название созданной главной таблицы <var>main_table</var>
 
 ## Редактируем миграции
 
@@ -68,7 +68,7 @@ variables:
     php artisan migrate
   ```
 
-- [ ] Заполняем <var>second_table</var>
+- [ ] Заполняем название созданной ведомой таблицы <var>second_table</var>
 
 ## Создание методов в моделях
 
