@@ -90,12 +90,12 @@ variables:
   ```
   php artisan make:resource $model_name/$model_nameResource
   ```
-- [ ] Делаем возврат значений конкретных полей из коллекции (по желанию)
+- [ ] Делаем возврат в ресурсе app\Http\Resources\$model_name\$model_nameResource значений конкретных полей из коллекции (по желанию)
   ```
     return [
             'id' => $this->id,
             'title' => $this->title,
-        ];
+    ];
   ```
 
 ## Настраиваем роуты для API
