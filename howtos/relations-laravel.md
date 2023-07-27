@@ -99,7 +99,7 @@ variables:
   ```
     $$main_field = $main_model::find(1);
   
-    $$second_field = $$main_field->$second_table;
+    $$second_table = $$main_field->$second_table;
   ```
 
 - [ ] Получаем запись из таблицы $main_table,
