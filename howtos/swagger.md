@@ -170,23 +170,23 @@ variables:
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $argument_name = $model_name::create($data);
+        $$argument_name = $model_name::create($data);
 
-        return $model_nameResource::make($argument_name);
+        return $model_nameResource::make($$argument_name);
     }
 
     /**
     * Display the specified resource.
     */
-    public function show($model_name $argument_name)
+    public function show($model_name $$argument_name)
     {
-        return $model_nameResource::make($argument_name);
+        return $model_nameResource::make($$argument_name);
     }
 
     /**
     * Show the form for editing the specified resource.
     */
-    public function edit($model_name $argument_name)
+    public function edit($model_name $$argument_name)
     {
       //
     }
@@ -194,22 +194,22 @@ variables:
     /**
     * Update the specified resource in storage.
     */
-    public function update(UpdateRequest $request, $model_name $argument_name)
+    public function update(UpdateRequest $request, $model_name $$argument_name)
     {
         $data = $request->validated();
-        $argument_name->update($data);
+        $$argument_name->update($data);
 
-        $argument_name = $argument_name->fresh();
+        $$argument_name = $$argument_name->fresh();
 
-        return $model_nameResource::make($argument_name);
+        return $model_nameResource::make($$argument_name);
     }
 
     /**
     * Remove the specified resource from storage.
     */
-    public function destroy($model_name $argument_name)
+    public function destroy($model_name $$argument_name)
     {
-        $argument_name->delete();
+        $$argument_name->delete();
 
         return response()->json([
             'message' => 'done',
