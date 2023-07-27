@@ -1,7 +1,7 @@
 ---
 title: Защита API в Swagger L5 в проекте Laravel
 tags:
-  - laravel
+  - api
 variables:
   site:
     description: Адрес сайта
