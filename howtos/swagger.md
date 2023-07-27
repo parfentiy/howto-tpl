@@ -15,6 +15,10 @@ variables:
     description: Имя модели
     required: true
     example: Post 
+  argument_name:
+    description: Имя аргумента в контроллере CRUD 
+    required: true
+    example: post
   routes_path:
     description: Путь для группы роутов в api.php (в множественном числе с маленькой буквы)
     required: true
@@ -86,6 +90,13 @@ variables:
   ```
   php artisan make:resource $model_name/$model_nameResource
   ```
+- [ ] Делаем возврат значений конкретных полей из коллекции (по желанию)
+  ```
+    return [
+            'id' => $this->id,
+            'title' => $this->title,
+        ];
+  ```
 
 ## Настраиваем роуты для API
 - [ ] Заполняем название группы роутов <var>routes_path</var>
@@ -122,6 +133,8 @@ variables:
   ```
   
 ## Заполняем контроллер CRUD'ами
+
+- [ ] Заполняем имя аргумента для методов контроллера <var>argument_name</var>
   
 - [ ] Возвращаемся в контроллер, пишем нужные use
   ```
@@ -157,23 +170,23 @@ variables:
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $one$model_name = $model_name::create($data);
+        $argument_name = $model_name::create($data);
 
-        return $model_nameResource::make($one$model_name);
+        return $model_nameResource::make($argument_name);
     }
 
     /**
     * Display the specified resource.
     */
-    public function show($model_name $one$model_name)
+    public function show($model_name $argument_name)
     {
-        return $model_nameResource::make($one$model_name);
+        return $model_nameResource::make($argument_name);
     }
 
     /**
     * Show the form for editing the specified resource.
     */
-    public function edit(Brand $brand)
+    public function edit($model_name $argument_name)
     {
       //
     }
@@ -181,22 +194,22 @@ variables:
     /**
     * Update the specified resource in storage.
     */
-    public function update(UpdateRequest $request, $model_name $one$model_name)
+    public function update(UpdateRequest $request, $model_name $argument_name)
     {
         $data = $request->validated();
-        $one$model_name->update($data);
+        $argument_name->update($data);
 
-        $one$model_name = $one$model_name->fresh();
+        $argument_name = $argument_name->fresh();
 
-        return $model_nameResource::make($one$model_name);
+        return $model_nameResource::make($argument_name);
     }
 
     /**
     * Remove the specified resource from storage.
     */
-    public function destroy($model_name $one$model_name)
+    public function destroy($model_name $argument_name)
     {
-        $one$model_name->delete();
+        $argument_name->delete();
 
         return response()->json([
             'message' => 'done',
@@ -362,14 +375,14 @@ variables:
      * ),
      *
      * @OA\Get(
-     *     path="/api/$routes_name/{one$model_name}",
+     *     path="/api/$routes_name/{$argument_name}",
      *     summary="Получить одну запись",
      *     tags={"Раздел $model_name"},
      *
      *     @OA\Parameter(
      *         description="ID",
      *         in="path",
-     *         name="one$model_name",
+     *         name="$argument_name",
      *         required=true,
      *         example=1,
      *     ),
@@ -387,14 +400,14 @@ variables:
      * ),
      *
      * @OA\Patch(
-     *     path="/api/$routes_name/{one$model_name}",
+     *     path="/api/$routes_name/{$argument_name}",
      *     summary="Обновление записи",
      *     tags={"Раздел $model_name"},
      *
      *     @OA\Parameter(
      *         description="ID",
      *         in="path",
-     *         name="one$model_name",
+     *         name="$argument_name",
      *         required=true,
      *         example=2,
      *     ),
@@ -422,14 +435,14 @@ variables:
      * ),
      *
      * @OA\Delete(
-     *     path="/api/$routes_name/{one$model_name}",
+     *     path="/api/$routes_name/{$argument_name}",
      *     summary="Удалить запись",
      *     tags={"Раздел $model_name"},
      *
      *     @OA\Parameter(
      *         description="ID",
      *         in="path",
-     *         name="one$model_name",
+     *         name="$argument_name",
      *         required=true,
      *         example=1,
      *     ),
