@@ -331,7 +331,7 @@ variables:
     /**
      *
      * @OA\Post(
-     *     path="/api/$routes_name",
+     *     path="/api/$routes_path",
      *     summary="Создание единичной записи",
      *     tags={"Раздел $model_name"},
      *
@@ -358,7 +358,7 @@ variables:
      * ),
      *
      * @OA\Get(
-     *     path="/api/$routes_name",
+     *     path="/api/$routes_path",
      *     summary="Список записей",
      *     tags={"Раздел $model_name"},
      *
@@ -375,7 +375,7 @@ variables:
      * ),
      *
      * @OA\Get(
-     *     path="/api/$routes_name/{$argument_name}",
+     *     path="/api/$routes_path/{$argument_name}",
      *     summary="Получить одну запись",
      *     tags={"Раздел $model_name"},
      *
@@ -400,7 +400,7 @@ variables:
      * ),
      *
      * @OA\Patch(
-     *     path="/api/$routes_name/{$argument_name}",
+     *     path="/api/$routes_path/{$argument_name}",
      *     summary="Обновление записи",
      *     tags={"Раздел $model_name"},
      *
@@ -435,7 +435,7 @@ variables:
      * ),
      *
      * @OA\Delete(
-     *     path="/api/$routes_name/{$argument_name}",
+     *     path="/api/$routes_path/{$argument_name}",
      *     summary="Удалить запись",
      *     tags={"Раздел $model_name"},
      *
