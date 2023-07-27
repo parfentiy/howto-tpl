@@ -97,6 +97,10 @@ variables:
   ```
     php artisan route:list
   ```
+- [ ] Затем идем в файл app\Http\Middleware\VerifyCsrfToken.php и в $except добавляем
+  ```
+    '/api/*',  
+  ```
 
 ## Создаем request'ы для тех CRUD, что будем использовать
 - [ ] UpdateRequest
@@ -108,7 +112,7 @@ variables:
     php artisan make:request $model_name/StoreRequest
   ```
 - [ ] В созданных request (app/Http/Requests/$model_name) 
-  в методе authorize() в return ставим false
+  в методе authorize() в return ставим true
 
 - [ ] В методе rules() в return пишем все поля модели, которые будут учавствовать, например:
   ```
@@ -119,7 +123,15 @@ variables:
   
 ## Заполняем контроллер CRUD'ами
   
-- [ ] Возвращаемся в контроллер и вставляем все методы CRUD следующим образом:
+- [ ] Возвращаемся в контроллер, пишем нужные use
+  ```
+    use App\Http\Requests\$model_name\StoreRequest;
+    use App\Http\Requests\$model_name\UpdateRequest;
+    use App\Http\Resources\$model_name\$model_nameResource;
+    use App\Models\$model_name;
+  ```
+  
+- [ ] и вставляем все методы CRUD следующим образом:
   ```
     /**
     * Display a listing of the resource.
@@ -127,6 +139,7 @@ variables:
     public function index()
     {
         $$routes_path = $model_name::all();
+  
         return $model_nameResource::collection($$routes_path);
     }
 
@@ -144,7 +157,7 @@ variables:
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $one$model_name = Brand::create($data);
+        $one$model_name = $model_name::create($data);
 
         return $model_nameResource::make($one$model_name);
     }
@@ -190,12 +203,7 @@ variables:
         ]);
     }
   ```
-  
-- [ ] Затем идем в файл app\Http\Middleware\VerifyCsrfToken.php и в $except добавляем
-  ```
-    '/api/*',  
-  ```
-  
+   
 ## Теперь проверяем с помощью Postman все эти методы CRUD
 
 ### Метод index (вывод всех записей)
