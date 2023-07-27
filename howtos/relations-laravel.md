@@ -49,9 +49,7 @@ variables:
   ```
     php artisan make:model $second_model -m
   ```
-- [ ] Заполняем <var>main_table</var>
-- [ ] Заполняем <var>second_table</var> 
-
+- [ ] Заполняем название созданной таблицы <var>main_table</var>
 
 ## Редактируем миграции
 
@@ -62,13 +60,15 @@ variables:
     $table->unsignedBigInteger('$main_field_id')->nullable();
     $table->index('$main_field_id', '$second_field_$main_field_idx');
     $table->foreign('$main_field_id', '$second_field_$main_field_fk')
-      ->on('$main_table')->references('id);
+      ->on('$main_table')->references('id');
   ```
   
 - [ ] Выполняем миграции
   ```
     php artisan migrate
   ```
+
+- [ ] Заполняем <var>second_table</var>
 
 ## Создание методов в моделях
 
@@ -77,7 +77,7 @@ variables:
   ```
     public function $second_table()
     {
-        return $this->hasMany($second_model::class, '$second_field_id', 'id);
+        return $this->hasMany($second_model::class);
     }
   ```
   
@@ -86,7 +86,7 @@ variables:
   ```
     public function $main_field()
     {
-        return $this->belongsTo($main_model::class, '$main_field_id', 'id');
+        return $this->belongsTo($main_model::class);
     }
   ```
 
