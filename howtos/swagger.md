@@ -1,7 +1,7 @@
 ---
 title: Двусторонний телеграмм-бот в Laravel
 tags:
-  - laravel
+  - telegram
 variables:
   bot_name:
     description: Имя бота (можно по-русски)

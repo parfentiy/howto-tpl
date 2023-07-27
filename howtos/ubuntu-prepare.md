@@ -1,7 +1,7 @@
 ---
 title: Настройка нового сервера Ubuntu с добавлением нового виртуального контейнера для проекта
 tags:
-  - Linux
+  - linux
 variables:
   main_domain:
     description: Ваш основной домен

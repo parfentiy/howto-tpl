@@ -1,7 +1,7 @@
 ---
 title: Боевой сервер для php проекта с nodejs
 tags:
-  - php
+  - linux
 variables:
   server_name:
     description: Адрес сервера где будет настройка производиться

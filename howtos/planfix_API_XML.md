@@ -1,7 +1,7 @@
 ---
 title: Обработка запросов в ПланФикс через АПИ с помощью токена
 tags:
-  - API
+  - api
 variables:
   api_key:
     description: api_key
