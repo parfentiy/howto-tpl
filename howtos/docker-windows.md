@@ -11,10 +11,21 @@ variables:
     description: Порт nginx
     required: true
     default: 8876
+  laravel_project_name:
+    description: Название проекта на Laravel
+    required: true
+    default: laradocker
+  php_version:
+    description: Версия PHP в виртуальной машине
+    required: true
+    default: 8.0
+    
 
 ---
 
 - [ ] Заполняем имя контейнера, который выведется при выполнении команды <var>nginx_container_name</var>
+- [ ] Заполняем номер порта для nginx <var>nginx_port</var>
+- [ ] Заполняем имя проекта Laravel <var>laravel_project_name</var>
 
 # Установка Docker Desktop на ПК
 
@@ -58,7 +69,7 @@ variables:
   ```
 Должно вывести "Hello from Docker!".
 
-# Установка и запуск Nginx
+# Установка и запуск Nginx + PHP-fpm
 
 - [ ] Если Nginx был установлен ранее и уже работает, то переходим к следующему разделу
 
@@ -76,6 +87,13 @@ variables:
         ports:
           - "$nginx_port:80"
         container_name: $nginx_container_name
+        depends_on:
+          - php
+
+      php:
+        image: php:8.0-fpm
+        volumes:
+          - ./:/var/www/
   ```
 
 
@@ -87,12 +105,21 @@ variables:
         root /var/www/public;
       
         location / {
-            try_files $uri /index.html;
+            try_files $uri /index.php;
+        }
+        location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass php:9000;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param PATH_INFO $fastcgi_path_info;
         }
     
     }
   ```
-- [ ] В этой же папке создаем папку public и кладем туда файл index.html со следующим содержимым:
+- [ ] В этой же папке создаем папку public и кладем туда файл index.php со следующим содержимым:
   ```
     <!DOCTYPE html>
     <html lang="en">
@@ -101,7 +128,9 @@ variables:
         <title>Title</title>
     </head>
     <body>
-            HELLO!!!!
+            HELLO!!!
+    <?php echo 'THIS IS PHP' ?>
+    
     </body>
     </html>
   ```
@@ -133,3 +162,81 @@ variables:
     docker compose down
   ```
 
+# Установка чистого проекта Laravel в Docker 
+- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
+  ```
+    docker-compose up -d
+  ```
+
+- [ ] Создаем чистый проект на Laravel в любой папке
+  ```
+    composer create-project laravel/laravel $laravel_project_name
+  ```
+
+- [ ] Копируем файл docker-compose.yml из папки с тестовым докером в корень папки с проектом Laravel
+- [ ] Создаем в проекте Laravel в корне папку _docker и туда копируем папку nginx из тестовой папки
+- [ ] В корне папки _docker создаем папку app и в ней создаем файл Dockerfile 
+- [ ] В этом файле вставляем:
+  ```
+    FROM php:8.0-fpm
+
+    RUN apt-get update && apt-get install -y \
+        apt-utils \
+        libpq-dev \
+        libpng-dev \
+        libzip-dev \
+        zip unzip \
+        git && \
+        docker-php-ext-install pdo_mysql && \
+        docker-php-ext-install bcmath && \
+        docker-php-ext-install gd && \
+        docker-php-ext-install zip && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
+    COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
+    
+    # Install composer
+    ENV COMPOSER_ALLOW_SUPERUSER=1
+    RUN curl -sS https://getcomposer.org/installer | php -- \
+        --filename=composer \
+        --install-dir=/usr/local/bin
+    
+    WORKDIR /var/www
+  ```
+
+- [ ] В папке app _docker создаем файл php.ini и в него вставляем:
+  ```
+    cgi.fix_pathinfo=0
+    max_execution_time = 1000
+    max_input_time = 1000
+    memory_limit=4G
+  ```
+  
+- [ ] В docker-compose.yml все затираем, если было, и вставляем:
+  ```
+    version: '3'
+
+    services:
+      nginx:
+        image: nginx:latest
+        volumes:
+          - ./:/var/www/
+          - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+        ports:
+          - "8876:80"
+        container_name: $laravel_project_name_nginx
+        depends_on:
+          - app
+      app:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+          - ./:/var/www/
+        container_name: $laravel_project_name_app
+  ```
+- [ ] В папке _docker/nginx/conf.d в файле nginx.conf вместо строки "fastcgi_pass php:9000" вставляем:
+  ```
+    fastcgi_pass app:9000
+  ```
