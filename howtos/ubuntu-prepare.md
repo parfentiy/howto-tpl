@@ -89,7 +89,7 @@ variables:
 
 - [ ] Если все сделано правильно, то в браузере вы должны увидеть такое сообщение:
 
-![Изображение](https://howto.parfentiy.site/nginx_started.png "Это успех")
+![Изображение](https://howto.parfentiy.site/images/nginx_started.png "Это успех")
 
 # Подключаемся к серверу по SSH с другого компьютера через его командную строку
 
