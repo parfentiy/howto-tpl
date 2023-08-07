@@ -7,8 +7,14 @@ variables:
     description: Имя контейнера с nginx
     required: true
     default: nginx-nginx-1
+  nginx_port:
+    description: Порт nginx
+    required: true
+    default: 8876
 
 ---
+
+- [ ] Заполняем имя контейнера, который выведется при выполнении команды <var>nginx_container_name</var>
 
 # Установка Docker Desktop на ПК
 
@@ -65,169 +71,48 @@ variables:
       nginx:
         image: nginx:latest
         volumes:
+          - ./:/var/www/
           - ./nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-          - "8876:80"  
+          - "$nginx_port:80"
+        container_name: $nginx_container_name
   ```
-- [ ] В командной строке Windows, в папке с созданным фалом, пишем команду запуска nginx 
-  ```
-    docker-compose up -d
-  ```
-- [ ] Заполняем имя контейнера, который выведется при выполнении команды <var>nginx_container_name</var>
-- [ ] Проверяем, запустился ли Nginx по [ссылке](localhost:8876)
 
-![Изображение](https://howto.parfentiy.site/images/nginx_started.png "Это успех")
-  
+
 - [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf,
-и прописываем в нем конфигурацию nginx:
+  и прописываем в нем конфигурацию nginx:
   ```
     server {
-  
+    
+        root /var/www/public;
+      
         location / {
             try_files $uri /index.html;
         }
     
     }
   ```
-- [ ] Запускаем команду 
+- [ ] В этой же папке создаем папку public и кладем туда файл index.html со следующим содержимым:
+  ```
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    HELLO
+    </body>
+    </html>
+  ```
+- [ ] Запускаем команду для проверки, должна появится linux bash-строка
   ```
   docker exec -it $nginx_container_name bash
   ```
-
-- [ ] Получаем реальный IP-адрес сервера
-
-  ```
-  curl -4 icanhazip.com
-  ```
-
-- [ ] Заполняем <var>server_ip</var>
-
-- [ ] Вводим адрес сервера в браузере
-
-  ```
-  http://$server_ip
-  ```
-
-- [ ] Если все сделано правильно, то в браузере вы должны увидеть такое сообщение:
-
-![Изображение](https://howto.parfentiy.site/nginx_started.png "Это успех")
-
-# Подключаемся к серверу по SSH с другого компьютера через его командную строку
-
-- [ ] Удаляем лишние ключи, если были
-
-  ```
-  ssh-keygen -R $server_local_ip
-  ```
-
-- [ ] Подключаемся по SSH к корневому серверу
-
-  ```
-  ssh $ubuntu_first_user@$server_local_ip
-  ```
-
-- [ ] Переключаемся на root'a
-
-  ```
-  sudo su
-  ```
-
-# Поднимаем виртуальную машину
-
-- [ ] Первая инициализация LXD (если уже было проделано, переходим к следующему пункту)
-
-  ```
-  lxd init
-  ```
-    __ВАЖНО! При задании параметров LXD все параметры указывать по дефолту, кроме:__
-
-    __- хранилище указываем: dir__
-
-    __- IPV6 указываем: none__
-
-- [ ] Инсталлируем виртуалку нашего проекта
-
-  ```
-  lxc launch ubuntu:20.04 $VM_name
-  ```
-
-- [ ] Запускаем виртуалку
-
-  ```
-  lxc exec $VM_name -- bash
-  ```
-
-- [ ] В новой виртуалке проверяем доступность интернета
-
-  ```
-  ping 8.8.8.8
-  ```
-  ```
-  ping ya.ru
-  ```
-
-- [ ] Обновляем ОС в виртуалке
-
-  ```
-  apt update
-  ```
-
-- [ ] Создаем SSH-ключ для виртуалки
-
-  ```
-  ssh-keygen
-  ```
-- [ ] Выводим содержимое ключа
-
-  ```
-  cat /root/.ssh/id_rsa.pub
-  ```
-  Копируем выведенное содержимое до первого пробела в буфер и создаем новый SSH-ключ в Git.
   
-- [ ] Выходим из виртуалки
-
+- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска nginx
   ```
-  exit
-  ```
-
-- [ ] Получаем ip-адрес новой виртуалки
-
-  ```
-  lxc list
+    docker-compose up -d
   ```
 
-- [ ] Заполняем ip-адрес <var>VM_ip</var>
-
-# Донастраиваем Nginx 
-
-- [ ] В ЛК Хостинг-провайдера добавляем А-запись на субдомен, указывая его параметры:
-  - имя: 
-    ```
-    $VM_name.$main_domain.
-    ```
-  - ip-адрес: 
-    ```
-    $server_ip
-    ```
-
-- [ ] Создаем новый конфиг для виртуалки
-
-  ```
-  echo '
-  server {
-    server_name $VM_name.$main_domain;
-    location / {
-      proxy_pass http://$VM_ip;
-      include proxy_params;
-    }
-  }
-  ' > /etc/nginx/sites-enabled/$VM_name.conf
-  ```
-
-- [ ] Перезапускаем Nginx
-
-  ```
-  service nginx reload
-  ```
-
-- Готовим сам [проект](https://howto.parfentiy.site/howto.html?pth=howtos/prd-server.md) на виртуалке
+- [ ] Проверяем, запустился ли Nginx по [ссылке](localhost:$nginx_port)
