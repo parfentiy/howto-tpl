@@ -75,7 +75,8 @@ variables:
   ```
 - [ ] Заполняем имя контейнера, который выведется при выполнении команды <var>nginx_container_name</var>
 - [ ] Проверяем, запустился ли Nginx по [ссылке](localhost:8876)
-  ![Изображение](https://howto.parfentiy.site/nginx_started.png "Это успех")
+
+[Изображение](https://howto.parfentiy.site/images/nginx_started.png "Это успех")
   
 - [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf,
 и прописываем в нем конфигурацию nginx:
