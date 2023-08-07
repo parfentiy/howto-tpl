@@ -76,6 +76,7 @@ variables:
 - [ ] На ПК в любом месте создаем папку, например nginx
 - [ ] В ней создаем файл docker-compose.yml и вставляем содержимое
   ```
+    echo 
     version: '3'
   
     services:
@@ -84,6 +85,7 @@ variables:
         volumes:
           - ./:/var/www/
         container_name: app_php
+    > docker-compose.yml
   ```
 
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска Docker
@@ -111,8 +113,6 @@ variables:
   ```
     docker-compose down
   ``` 
-
-- [ ] #### Если дальше нужно установить проект Laravel, то переходим к следующему разделу
 
 - [ ] Обновляем файл docker-compose.yml
   ```
@@ -174,15 +174,6 @@ variables:
     </body>
     </html>
   ```
-- [ ] Запускаем команду для проверки, должна появится linux bash-строка
-  ```
-    docker exec -it app_nginx bash
-  ```
-  
- - [ ] Выходим из bash-строки
-  ```
-    exit
-  ```
   
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска nginx
   ```
@@ -208,17 +199,23 @@ variables:
     docker-compose up -d
   ```
 
+- [ ] Заходим в bash-строку
+  ```
+    docker exec -it app_php bash
+  ```
+
 - [ ] Создаем чистый проект на Laravel в любой папке
   ```
     composer create-project laravel/laravel $laravel_project_name
   ```
 
 - [ ] Копируем файл docker-compose.yml из папки с тестовым докером в корень папки с проектом Laravel
+  
 - [ ] Создаем в проекте Laravel в корне папку _docker и туда копируем папку nginx из тестовой папки
 - [ ] В корне папки _docker создаем папку app и в ней создаем файл Dockerfile 
 - [ ] В этом файле вставляем:
   ```
-    FROM php:8.0-fpm
+    FROM php:$php_version-fpm
 
     RUN apt-get update && apt-get install -y \
         apt-utils \
@@ -268,6 +265,7 @@ variables:
         container_name: $laravel_project_name_nginx
         depends_on:
           - app
+  
       app:
         build:
             context: .
