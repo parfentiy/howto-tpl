@@ -18,7 +18,7 @@ variables:
   php_version:
     description: Версия PHP в виртуальной машине
     required: true
-    default: 8.0
+    example: 8.0
     
 
 ---
@@ -79,23 +79,63 @@ variables:
     version: '3'
   
     services:
+      php:
+        image: php:8.0-fpm
+        volumes:
+          - ./:/var/www/
+        container_name: app_php
+  ```
+
+- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска Docker
+  ```
+    docker-compose up -d
+  ```
+  
+- [ ] Запускаем bash-строку контейнера PHP
+  ```
+    docker exec -it app_php bash
+  ```
+
+- [ ] Узнаем версию PHP 
+  ```
+    php -v
+  ```
+  
+- [ ] Заполняем версию PHP <var>php_version</var>
+
+- [ ] Выходим из bash-строки
+  ```
+    exit
+  ```
+- [ ] Останавливаем Docker-контейнер
+  ```
+    docker-compose down
+  ``` 
+
+- [ ] #### Если дальше нужно установить проект Laravel, то переходим к следующему разделу
+
+- [ ] Обновляем файл docker-compose.yml
+  ```
+    version: '3'
+    
+    services:
       nginx:
         image: nginx:latest
         volumes:
           - ./:/var/www/
           - ./nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-          - "$nginx_port:80"
-        container_name: $nginx_container_name
+          - "8876:80"
+        container_name: app_nginx
         depends_on:
           - php
-
+    
       php:
-        image: php:8.0-fpm
+        image: php:$php_version-fpm
         volumes:
           - ./:/var/www/
+        container_name: app_php
   ```
-
 
 - [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf,
   и прописываем в нем конфигурацию nginx:
@@ -136,7 +176,7 @@ variables:
   ```
 - [ ] Запускаем команду для проверки, должна появится linux bash-строка
   ```
-  docker exec -it $nginx_container_name bash
+    docker exec -it app_nginx bash
   ```
   
  - [ ] Выходим из bash-строки
