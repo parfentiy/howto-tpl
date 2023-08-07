@@ -101,7 +101,7 @@ variables:
         <title>Title</title>
     </head>
     <body>
-    HELLO
+            HELLO!!!!
     </body>
     </html>
   ```
@@ -110,15 +110,26 @@ variables:
   docker exec -it $nginx_container_name bash
   ```
   
+ - [ ] Выходим из bash-строки
+  ```
+    exit
+  ```
+  
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска nginx
   ```
     docker-compose up -d
   ```
 
 - [ ] Проверяем, запустился ли Nginx по [ссылке](http://localhost:$nginx_port)
+Должно вывестись на экран браузера HELLO!!!
 
-- [ ] Для перезагрузки процесса и применения изменений в конфгах можно ввести команду:
+- [ ] Для перезагрузки процесса и применения изменений в конфигах можно ввести команду:
   ```
     docker exec app_nginx nginx -s reload
+  ```
+
+- [ ] Для выгрузки процесса из докера можно ввести команду:
+  ```
+    docker compose down
   ```
 
