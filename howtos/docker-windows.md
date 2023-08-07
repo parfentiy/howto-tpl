@@ -74,9 +74,13 @@ variables:
 - [ ] Если Nginx был установлен ранее и уже работает, то переходим к следующему разделу
 
 - [ ] На ПК в любом месте создаем папку, например nginx
+  ```
+    mkdir nginx
+    cd nginx
+    copy NUL docker-compose.yml
+  ```  
 - [ ] В ней создаем файл docker-compose.yml и вставляем содержимое
   ```
-    echo 
     version: '3'
   
     services:
@@ -85,7 +89,6 @@ variables:
         volumes:
           - ./:/var/www/
         container_name: app_php
-    > docker-compose.yml
   ```
 
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска Docker
@@ -137,8 +140,20 @@ variables:
         container_name: app_php
   ```
 
-- [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf,
-  и прописываем в нем конфигурацию nginx:
+- [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf
+  ```
+    mkdir nginx
+    cd nginx
+    mkdir conf.d
+    cd conf.d
+    copy NUL nginx.conf
+    cd ../..
+    mkdir public
+    cd public
+    copy NUL index.php
+    cd ..
+  ```  
+- [ ] Прописываем в файле nginx.conf конфигурацию nginx:
   ```
     server {
     
@@ -159,7 +174,7 @@ variables:
     
     }
   ```
-- [ ] В этой же папке создаем папку public и кладем туда файл index.php со следующим содержимым:
+- [ ] В файл index.php со следующим содержимым:
   ```
     <!DOCTYPE html>
     <html lang="en">
@@ -194,26 +209,21 @@ variables:
   ```
 
 # Установка чистого проекта Laravel в Docker 
-- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
-  ```
-    docker-compose up -d
-  ```
 
-- [ ] Заходим в bash-строку
-  ```
-    docker exec -it app_php bash
-  ```
-
-- [ ] Создаем чистый проект на Laravel в любой папке
-  ```
-    composer create-project laravel/laravel $laravel_project_name
-  ```
-
-- [ ] Копируем файл docker-compose.yml из папки с тестовым докером в корень папки с проектом Laravel
   
 - [ ] Создаем в проекте Laravel в корне папку _docker и туда копируем папку nginx из тестовой папки
-- [ ] В корне папки _docker создаем папку app и в ней создаем файл Dockerfile 
-- [ ] В этом файле вставляем:
+ В корне папки _docker создаем папку app и в ней создаем файл Dockerfile и php.ini 
+  ```
+    mkdir laraproject
+    cd laraproject
+    mkdir _docker
+    cd ..
+    xcopy nginx laraproject\_docker  /h /i /c /k /e /r /y
+    mkdir laraproject\_docker\app
+    copy NUL laraproject\_docker\app\Dockerfile
+    copy NUL laraproject\_docker\app\php.ini
+  ```
+- [ ] В этом Dockerfile вставляем:
   ```
     FROM php:$php_version-fpm
 
@@ -242,7 +252,7 @@ variables:
     WORKDIR /var/www
   ```
 
-- [ ] В папке app _docker создаем файл php.ini и в него вставляем:
+- [ ] В php.ini вставляем:
   ```
     cgi.fix_pathinfo=0
     max_execution_time = 1000
@@ -278,3 +288,25 @@ variables:
   ```
     fastcgi_pass app:9000
   ```
+
+- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
+  ```
+    docker-compose up -d
+  ```
+
+- [ ] Заходим в bash-строку
+  ```
+    docker exec -it app_php bash
+  ```
+
+- [ ] Создаем чистый проект на Laravel в любой папке
+  ```
+    composer create-project laravel/laravel .
+  ```
+
+- [ ] Делаем права на запись на папку Storage
+  ```
+    chmod -R 777 storage
+  ```
+  
+Проверяем запуск проекта в браузере
