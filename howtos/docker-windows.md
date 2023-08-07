@@ -6,7 +6,7 @@ variables:
   nginx_container_name:
     description: Имя контейнера с nginx
     required: true
-    default: nginx-nginx-1
+    default: app_nginx
   nginx_port:
     description: Порт nginx
     required: true
@@ -115,4 +115,10 @@ variables:
     docker-compose up -d
   ```
 
-- [ ] Проверяем, запустился ли Nginx по [ссылке](localhost:$nginx_port)
+- [ ] Проверяем, запустился ли Nginx по [ссылке](http://localhost:$nginx_port)
+
+- [ ] Для перезагрузки процесса и применения изменений в конфгах можно ввести команду:
+  ```
+    docker exec app_nginx nginx -s reload
+  ```
+
