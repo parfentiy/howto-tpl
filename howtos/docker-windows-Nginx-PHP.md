@@ -8,7 +8,7 @@ variables:
     required: true
     default: D
   folder:
-    description: Название папкис докерскими файлами
+    description: Название папки с докерскими файлами
     required: true
     default: nginx
   nginx_port:
@@ -152,7 +152,7 @@ variables:
   ```
 
 - [ ] Проверяем, запустился ли Nginx по [ссылке](http://localhost:$nginx_port)
-Должно вывестись на экран браузера HELLO!!!
+Должно вывестись на экран браузера HELLO!!! THIS IS PHP
 
 - [ ] Для перезагрузки процесса и применения изменений в конфигах можно ввести команду:
   ```
