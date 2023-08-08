@@ -83,9 +83,10 @@ variables:
     copy NUL $folder\docker-compose.yml
     copy NUL $folder\nginx\conf.d\nginx.conf
     copy NUL $folder\public\index.php
+    cd $folder
   ```  
 
-- [ ] Обновляем файл docker-compose.yml
+- [ ] В docker-compose.yml вставляем:
   ```
     version: '3'
     
@@ -99,7 +100,7 @@ variables:
           - "8876:80"
         container_name: app_nginx
         depends_on:
-          - php
+          - app
     
       app:
         image: php:$php_version-fpm
@@ -107,21 +108,7 @@ variables:
           - ./:/var/www/
         container_name: app_php
   ```
-
-- [ ] Далее,
-  ```
-    cd $disk:/$folder
-    mkdir nginx
-    cd nginx
-    mkdir conf.d
-    cd conf.d
-    copy NUL nginx.conf
-    cd ../..
-    mkdir public
-    cd public
-    copy NUL index.php
-    cd ..
-  ```  
+ 
 - [ ] Прописываем в файле nginx.conf конфигурацию nginx:
   ```
     server {
@@ -159,7 +146,7 @@ variables:
     </html>
   ```
   
-- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска nginx
+- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска Docker
   ```
     docker-compose up -d
   ```
@@ -177,121 +164,3 @@ variables:
     docker compose down
   ```
 
-# Установка чистого проекта Laravel в Docker 
-
-  
-- [ ] Создаем в проекте Laravel в корне папку _docker и туда копируем папку nginx из тестовой папки
- В корне папки _docker создаем папку app и в ней создаем файл Dockerfile и php.ini 
-  ```
-    mkdir laraproject
-    cd laraproject
-    mkdir _docker
-    cd ..
-    xcopy nginx laraproject\_docker  /h /i /c /k /e /r /y
-    mkdir laraproject\_docker\app
-    copy NUL laraproject\_docker\app\Dockerfile
-    copy NUL laraproject\_docker\app\php.ini
-    move laraproject\_docker\docker-compose.yml laraproject\
-  ```
-- [ ] В этом Dockerfile вставляем:
-  ```
-    FROM php:$php_version-fpm
-
-    RUN apt-get update && apt-get install -y \
-        apt-utils \
-        libpq-dev \
-        libpng-dev \
-        libzip-dev \
-        zip unzip \
-        git && \
-        docker-php-ext-install pdo_mysql && \
-        docker-php-ext-install bcmath && \
-        docker-php-ext-install gd && \
-        docker-php-ext-install zip && \
-        apt-get clean && \
-        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-    
-    COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
-    
-    # Install composer
-    ENV COMPOSER_ALLOW_SUPERUSER=1
-    RUN curl -sS https://getcomposer.org/installer | php -- \
-        --filename=composer \
-        --install-dir=/usr/local/bin
-    
-    WORKDIR /var/www
-  ```
-
-- [ ] В php.ini вставляем:
-  ```
-    cgi.fix_pathinfo=0
-    max_execution_time = 1000
-    max_input_time = 1000
-    memory_limit=4G
-  ```
-  
-- [ ] В docker-compose.yml все затираем, если было, и вставляем:
-  ```
-    version: '3'
-
-    services:
-      nginx:
-        image: nginx:latest
-        volumes:
-          - ./:/var/www/
-          - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
-        ports:
-          - "8876:80"
-        container_name: laravel_nginx
-        depends_on:
-          - app
-  
-      app:
-        build:
-            context: .
-            dockerfile: _docker/app/Dockerfile
-        volumes:
-          - ./:/var/www/
-        container_name: laravel_app
-  ```
-- [ ] В папке _docker/nginx/conf.d в файле nginx.conf вместо строки "fastcgi_pass php:9000" вставляем:
-  ```
-    fastcgi_pass app:9000
-  ```
-
-
-
-- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
-  ```
-    docker-compose up -d
-  ```
-
-- [ ] Заходим в bash-строку
-  ```
-    docker exec -it app_php bash
-  
-  ```
-- [ ] Временно все убираем из папки проекта Laravel
-  ```
-    cd ..
-    mkdir temp
-    cd www
-    mv * /var/temp
-  ```
-  
-- [ ] Создаем чистый проект на Laravel в любой папке
-  ```
-    composer create-project laravel/laravel .
-  ```
-
-- [ ] Возвращаем из временной папки все для Docker
-  ```
-    &&&&&&&&&&&&&&&&&
-  ```
-
-- [ ] Делаем права на запись на папку Storage
-  ```
-    chmod -R 777 storage
-  ```
-  
-Проверяем запуск проекта в браузере
