@@ -1,12 +1,12 @@
 ---
-title: Поднятие Laravel-проекта на Docker под Windows
+title: Поднятие Nginx и PHP-fpm на Docker под Windows
 tags:
   - docker
 variables:
   disk:
     description: Диск, где создавать докерские файлы
     required: true
-    default: D:
+    default: D
   folder:
     description: Название папкис докерскими файлами
     required: true
