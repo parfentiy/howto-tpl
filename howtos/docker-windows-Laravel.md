@@ -137,14 +137,12 @@ variables:
 
 - [ ] Заходим в bash-строку
   ```
-    docker exec -it app_php bash
+    docker exec -it laravel_app bash
   
   ```
 - [ ] Временно все убираем из папки проекта Laravel
   ```
-    cd ..
-    mkdir temp
-    cd www
+    mkdir /var/temp
     mv * /var/temp
   ```
   
@@ -155,7 +153,11 @@ variables:
 
 - [ ] Возвращаем из временной папки все для Docker
   ```
-    &&&&&&&&&&&&&&&&&
+    cd /var/temp
+    mv * /var/www
+    cd /var
+    rm -R temp
+    cd /var/www
   ```
 
 - [ ] Делаем права на запись на папку Storage
@@ -163,4 +165,4 @@ variables:
     chmod -R 777 storage
   ```
   
-Проверяем запуск проекта в браузере
+Проверяем запуск проекта по [ссылке](http://localhost:$nginx_port)
