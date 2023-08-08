@@ -19,6 +19,27 @@ variables:
     description: Версия PHP в виртуальной машине
     required: true
     example: 8.0
+  database_name:    
+    description: Название БД
+    required: true
+    example: testDB
+  user:    
+    description: Имя пользователя в БД
+    required: false
+    example: peter
+  password:    
+    description: Пароль пользователя
+    required: false
+    example: 1234
+  root_password:    
+    description: Пароль пользователя root в БД
+    required: true
+    default: root
+  db_port:
+    description: Порт для подключения к БД извне
+    required: true
+    default: 8101
+
 
 
 ---
@@ -27,6 +48,11 @@ variables:
 - [ ] Заполняем номер порта для nginx <var>nginx_port</var>
 - [ ] Заполняем номер версии PHP в виртуальном контейнере 
   (см. [тут](https://howto.parfentiy.site/howto.html?pth=howtos/docker-windows-Nginx-PHP.md)) <var>php_version</var>
+- [ ] Заполняем название БД <var>database_name</var>
+- [ ] Заполняем имя юзера БД <var>user</var>
+- [ ] Заполняем пароль юзера <var>password</var>
+- [ ] Заполняем пароль юзера root в БД <var>root_password</var>
+- [ ] Заполняем номер порта для подключения к БД извне <var>db_port</var>
 
 # Установка чистого проекта Laravel в Docker 
 
@@ -128,6 +154,22 @@ variables:
         volumes:
           - ./:/var/www/
         container_name: laravel_app
+  
+      db:
+      image: mysql:8.0
+      restart: always
+      volumes:
+        - ./tmp/db:/var/lib/mysql
+      environment:
+          MYSQL_DATABASE: $database_name
+          MYSQL_ROOT_PASSWORD: $root_password
+          MYSQL_USER: $user
+          MYSQL_PASSWORD: $password
+          
+      ports:
+        - $db_port:3306
+      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+      container_name: project_db
   ```
 
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
@@ -163,6 +205,21 @@ variables:
 - [ ] Делаем права на запись на папку Storage
   ```
     chmod -R 777 storage
+  ```
+  
+- [ ] В .env-файле в разделе БД прописываем:
+  ```
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=$database_name
+    DB_USERNAME=$user
+    DB_PASSWORD=$password
+  ``` 
+
+- [ ] Делаем первую миграцию
+  ```  
+    php artisan migrate
   ```
   
 Проверяем запуск проекта по [ссылке](http://localhost:$nginx_port)
