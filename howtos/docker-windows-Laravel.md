@@ -2,23 +2,23 @@
 title: Поднятие Laravel-проекта на Docker под Windows
 tags:
   - docker 
-  variables:
-    disk:
-      description: Диск, где будет проект Laravel
-      required: true
-      default: D
-    folder:
-      description: Название папки с проектом Laravel
-      required: true
-      default: nginx
-    nginx_port:
-      description: Порт nginx
-      required: true
-      default: 8876
-    php_version:
-      description: Версия PHP в виртуальной машине
-      required: true
-      example: 8.0
+variables:
+  disk:
+    description: Диск, где будет проект Laravel
+    required: true
+    default: D
+  folder:
+    description: Название папки с проектом Laravel
+    required: true
+    default: nginx
+  nginx_port:
+    description: Порт nginx
+    required: true
+    default: 8876
+  php_version:
+    description: Версия PHP в виртуальной машине
+    required: true
+    example: 8.0
 
 
 ---
