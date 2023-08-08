@@ -3,10 +3,14 @@ title: Поднятие Laravel-проекта на Docker под Windows
 tags:
   - docker
 variables:
-  project_folder:
-    description: Размещение проекта
+  disk:
+    description: Диск, где создавать докерские файлы
     required: true
-    default: e:\laravel
+    default: D:
+  folder:
+    description: Название папкис докерскими файлами
+    required: true
+    default: nginx
   nginx_port:
     description: Порт nginx
     required: true
@@ -18,8 +22,8 @@ variables:
     
 
 ---
-
-- [ ] Заполняем размещение папки, в которой будем разворачивать проект <var>project_folder</var>
+- [ ] Заполняем букву диска, где будет докерская папка <var>disk</var>
+- [ ] Заполняем размещение папки, в которой будут находиться докерские файлы <var>folder</var>
 - [ ] Заполняем номер порта для nginx <var>nginx_port</var>
 
 # Установка Docker Desktop на ПК
@@ -68,12 +72,13 @@ variables:
 
 - [ ] Если Nginx был установлен ранее и уже работает, то переходим к следующему разделу
 
-- [ ] На ПК в любом месте создаем папку, например nginx
+- [ ] Создаем папку, где будут лежать докерские файлы
   ```
-    mkdir nginx
-    cd nginx
-    copy NUL docker-compose.yml
+    $disk:
+    mkdir /$folder
+    cd /$folder
   ```  
+  
 - [ ] В ней создаем файл docker-compose.yml и вставляем содержимое
   ```
     version: '3'
