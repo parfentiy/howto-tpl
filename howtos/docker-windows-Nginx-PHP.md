@@ -80,9 +80,9 @@ variables:
     mkdir $folder\nginx
     mkdir $folder\nginx\conf.d
     mkdir $folder\public
-    copy NUL $folder docker-compose.yml
+    copy NUL $folder\docker-compose.yml
     copy NUL $folder\nginx\conf.d\nginx.conf
-    copy NUL $folder\public index.php
+    copy NUL $folder\public\index.php
   ```  
 
 - [ ] Обновляем файл docker-compose.yml
