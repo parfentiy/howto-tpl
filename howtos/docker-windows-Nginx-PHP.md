@@ -72,51 +72,18 @@ variables:
 
 - [ ] Если Nginx был установлен ранее и уже работает, то переходим к следующему разделу
 
-- [ ] Создаем папку, где будут лежать докерские файлы
+- [ ] Создаем папку и всю структуру, где будут лежать докерские файлы и создаем пустой docker-compose.yml
   ```
     $disk:
     cd $disk:\
     mkdir $folder
-    cd $folder
+    mkdir $folder\nginx
+    mkdir $folder\nginx\conf.d
+    mkdir $folder\public
+    copy NUL $folder docker-compose.yml
+    copy NUL $folder\nginx\conf.d\nginx.conf
+    copy NUL $folder\public index.php
   ```  
-  
-- [ ] В ней создаем файл docker-compose.yml и вставляем содержимое
-  ```
-    version: '3'
-  
-    services:
-      php:
-        image: php:8.0-fpm
-        volumes:
-          - ./:/var/www/
-        container_name: app_php
-  ```
-
-- [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска Docker
-  ```
-    docker-compose up -d
-  ```
-  
-- [ ] Запускаем bash-строку контейнера PHP
-  ```
-    docker exec -it app_php bash
-  ```
-
-- [ ] Узнаем версию PHP 
-  ```
-    php -v
-  ```
-  
-- [ ] Заполняем версию PHP <var>php_version</var>
-
-- [ ] Выходим из bash-строки
-  ```
-    exit
-  ```
-- [ ] Останавливаем Docker-контейнер
-  ```
-    docker-compose down
-  ``` 
 
 - [ ] Обновляем файл docker-compose.yml
   ```
@@ -134,15 +101,16 @@ variables:
         depends_on:
           - php
     
-      php:
+      app:
         image: php:$php_version-fpm
         volumes:
           - ./:/var/www/
         container_name: app_php
   ```
 
-- [ ] Далее, в созданной папке, где лежит docker-compose.yml, создаем папку nginx\conf.d и в ней файл nginx.conf
+- [ ] Далее,
   ```
+    cd $disk:/$folder
     mkdir nginx
     cd nginx
     mkdir conf.d
@@ -166,7 +134,7 @@ variables:
         location ~ \.php$ {
             try_files $uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass php:9000;
+            fastcgi_pass app:9000;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
