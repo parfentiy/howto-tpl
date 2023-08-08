@@ -75,8 +75,9 @@ variables:
 - [ ] Создаем папку, где будут лежать докерские файлы
   ```
     $disk:
-    mkdir /$folder
-    cd /$folder
+    cd $disk:\
+    mkdir $folder
+    cd $folder
   ```  
   
 - [ ] В ней создаем файл docker-compose.yml и вставляем содержимое
