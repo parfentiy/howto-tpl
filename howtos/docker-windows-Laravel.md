@@ -41,8 +41,8 @@ variables:
     mkdir $folder\_docker\app
     copy NUL $folder\docker-compose.yml
     copy NUL $folder\_docker\nginx\conf.d\nginx.conf
-    copy NUL $$folder\_docker\app\Dockerfile
-    copy NUL $$folder\_docker\app\php.ini
+    copy NUL $folder\_docker\app\Dockerfile
+    copy NUL $folder\_docker\app\php.ini
     cd $folder
   ```  
   
