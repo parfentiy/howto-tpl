@@ -156,20 +156,17 @@ variables:
         container_name: laravel_app
   
       db:
-      image: mysql:8.0
-      restart: always
-      volumes:
-        - ./tmp/db:/var/lib/mysql
-      environment:
+        image: mysql:8.0
+        restart: always
+        volumes:
+          - ./tmp/db:/var/lib/mysql
+        environment:
           MYSQL_DATABASE: $database_name
           MYSQL_ROOT_PASSWORD: $root_password
-          MYSQL_USER: $user
-          MYSQL_PASSWORD: $password
-          
-      ports:
-        - $db_port:3306
-      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-      container_name: project_db
+        ports:
+          - "$db_port:3306"
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+        container_name: project_db
   ```
 
 - [ ] В командной строке Windows, в папке с созданным файлом, пишем команду запуска docker
