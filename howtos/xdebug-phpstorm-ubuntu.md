@@ -1,46 +1,12 @@
 ---
 title: Установка X-debug для PHP-Storm в Ubuntu
 tags:
-  - docker 
+  - PHP Storm
 variables:
   disk:
     description: Диск, где будет проект Laravel
     required: true
     default: D
-  folder:
-    description: Название папки с проектом Laravel
-    required: true
-    default: nginx
-  nginx_port:
-    description: Порт nginx
-    required: true
-    default: 8876
-  php_version:
-    description: Версия PHP в виртуальной машине
-    required: true
-    example: 8.0
-  database_name:    
-    description: Название БД
-    required: true
-    example: testDB
-  user:    
-    description: Имя пользователя в БД
-    required: false
-    example: peter
-  password:    
-    description: Пароль пользователя
-    required: false
-    example: 1234
-  root_password:    
-    description: Пароль пользователя root в БД
-    required: true
-    default: root
-  db_port:
-    description: Порт для подключения к БД извне
-    required: true
-    default: 8101
-
-
 
 ---
 - [ ] Заполняем букву диска, где будет докерская папка <var>disk</var>
