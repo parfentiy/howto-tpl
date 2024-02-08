@@ -7,11 +7,15 @@ variables:
     description: Название модели
     required: true
     example: User
-
+  httpquery:
+    description: api-запрос
+    required: true
+    example: users
 ---
 
 # Предварительно
 - [ ] Вводим название модели <var>model</var>
+- [ ] Вводим конечную строку api-запроса <var>httpquery</var>
 
 # Создание контроллера, ресурсов и request'ов
 
@@ -138,3 +142,16 @@ variables:
         // ... прочие поля по необходимости
     ];
   ```
+
+# Наполнение файла routes/api.php
+
+- [ ] В разделе use вставляем
+  ```
+    use App\Http\Controllers\Api\$modelController;
+  ```
+
+- [ ] В разделе Route::apiResources([ вставляем
+  ```
+      '$httpquery' => $modelController::class,
+  ```
+  
