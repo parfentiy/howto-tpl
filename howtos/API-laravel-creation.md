@@ -44,28 +44,28 @@ variables:
   ```
 - [ ] там же в метод index следующую конструкцию
   ```
-    $$data = $model::orderBy('id', 'DESC')->paginate(15);
+    $data = $model::orderBy('id', 'DESC')->paginate(15);
 
-    return IndexResource::collection($$data);  
+    return IndexResource::collection($data);  
   ```
 
 - [ ] там же в метод store следующую конструкцию
   ```
-    $$validator = Validator::make(request()->all(), [
+    $validator = Validator::make(request()->all(), [
         'title' => 'required',
         'description' => 'required',
         // .... остальные поля
     ]);
 
     // Проверяем успешность валидации
-    if ($$validator->passes()) {
-        $$input = $request->all();
-        $$obj = $model::create($$input);
+    if ($validator->passes()) {
+        $input = $request->all();
+        $obj = $model::create($input);
 
-        return new IndexResource($$obj);
+        return new IndexResource($obj);
     } else {
       // Обработка ошибок валидации
-      $$errors = $$validator->errors();
+      $errors = $validator->errors();
       // TODO: дальнейшая логика обработки ошибок валидации
 
       return abort('403');
@@ -74,32 +74,32 @@ variables:
 
 - [ ] там же в метод show следующую конструкцию
   ```
-    $$obj = $model::find($$id);
+    $obj = $model::find($id);
 
-    return new $modelResource($$obj);
+    return new $modelResource($obj);
   ```
 
 - [ ] там же в метод update следующую конструкцию
   ```
-    $$obj = $model::find($$id);
+    $obj = $model::find($id);
 
     // Валидация
-    $$validator = Validator::make(request()->all(), [
+    $validator = Validator::make(request()->all(), [
         'title' => 'required',
         'description' => 'required',
         // .... остальные поля
     ]);
 
     // Проверяем успешность валидации
-    if ($$validator->passes()) {
-        $$input = $$request->all();
-        $$obj->update($$input);
+    if ($validator->passes()) {
+        $input = $request->all();
+        $obj->update($input);
 
-        return new IndexResource($$obj);
+        return new IndexResource($obj);
 
     } else {
         // Обработка ошибок валидации
-        $$errors = $$validator->errors();
+        $errors = $validator->errors();
         // TODO: дальнейшая логика обработки ошибок валидации
 
         return abort('403');
@@ -108,9 +108,9 @@ variables:
 
 - [ ] там же в метод destroy следующую конструкцию
   ```
-    $$obj = $model::withTrashed()->find($$id);
+    $obj = $model::withTrashed()->find($id);
 
-    $$obj->forceDelete();
+    $obj->forceDelete();
 
     return response()->json(['message' => 'delete']);
   ```
