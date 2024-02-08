@@ -3,7 +3,7 @@ title: Создание API-контроллера, ресурса и запро
 tags:
   - Laravel
 variables:
-  main_model:
+  model:
     description: Название модели
     required: true
     example: User
