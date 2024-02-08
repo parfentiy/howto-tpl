@@ -28,7 +28,7 @@ variables:
     php artisan make:resource $model/$modelResource
   ```
 
-  - [ ] Создаем Request для валидации при сохранении
+- [ ] Создаем Request для валидации при сохранении
   ```
     php artisan make:request API/$model/StoreRequest
   ```
