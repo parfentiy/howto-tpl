@@ -11,6 +11,10 @@ variables:
     description: api-запрос
     required: true
     example: users
+  host:
+    description: Андрес сервера, где будет запущена проверка CRUD
+    required: true
+    example: localhost:8000
 ---
 
 # Предварительно
@@ -37,6 +41,18 @@ variables:
     php artisan make:request API/$model/StoreRequest
   ```
 
+# Дополнения в Модель
+
+- [ ] В Модели в разделе use, на всякий случай, добавляем:
+  ```
+    use Illuminate\Database\Eloquent\SoftDeletes;
+    use App\Models\Traits\Filterable;
+  ```
+- [ ] А также добавляем трейты:
+  ```
+    use Filterable, SoftDeletes;
+  ```
+  
 # Наполнение контроллера
 
 - [ ] В созданном контроллере вносим в раздел use
@@ -154,4 +170,37 @@ variables:
   ```
       '$httpquery' => $modelController::class,
   ```
-  
+
+- [ ] Очищаем все, что можно в проекте
+  ```
+    php artisan optimize
+  ```
+
+# Проверка работы CRUD (например, Postman)
+
+- [ ] В Postman в разделе params создаем имена полей и их значения для новой записи
+
+- [ ] метод index (получить все записи). Запрос - GET
+  ```
+    $host/api/$httpquery
+  ```
+
+- [ ] метод store (создать новую запись). Запрос - POST
+  ```
+    $host/api/$httpquery
+  ```
+
+- [ ] метод show (показать одну запись). Запрос - GET
+  ```
+    $host/api/$httpquery/1
+  ```
+
+- [ ] метод update (изменить запись). Запрос - PUT
+  ```
+    $host/api/$httpquery/1
+  ```
+
+- [ ] метод destroy (удалить запись). Запрос - DELETE
+  ```
+    $host/api/$httpquery/1
+  ```
