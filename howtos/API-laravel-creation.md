@@ -12,7 +12,7 @@ variables:
     required: true
     example: users
   host:
-    description: Андрес сервера, где будет запущена проверка CRUD
+    description: Адрес сервера, где будет запущена проверка CRUD
     required: true
     example: localhost:8000
 ---
@@ -20,6 +20,7 @@ variables:
 # Предварительно
 - [ ] Вводим название модели <var>model</var>
 - [ ] Вводим конечную строку api-запроса <var>httpquery</var>
+- [ ] Вводим адрес сервера, где будет запущена проверка CRUD <var>host</var>
 
 # Создание контроллера, ресурсов и request'ов
 
@@ -48,6 +49,7 @@ variables:
     use Illuminate\Database\Eloquent\SoftDeletes;
     use App\Models\Traits\Filterable;
   ```
+  
 - [ ] А также добавляем трейты:
   ```
     use Filterable, SoftDeletes;
@@ -62,6 +64,7 @@ variables:
     use App\Models\$model;
     use Illuminate\Support\Facades\Validator;
   ```
+  
 - [ ] там же в метод index следующую конструкцию
   ```
     $data = $model::orderBy('id', 'DESC')->paginate(15);
