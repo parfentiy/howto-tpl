@@ -60,12 +60,24 @@ variables:
   ```
 - [ ] Заполняем название созданной главной таблицы <var>main_table</var>
   
-- [ ] В !!ведомой!! миграции вставляем вдобавок: 
+- [ ] В !!ведомой!! миграции в методе up вставляем вдобавок: 
   ```
-    $table->unsignedBigInteger('$main_field_id')->nullable();
-    $table->index('$main_field_id', '$second_field_$main_field_idx');
-    $table->foreign('$main_field_id', '$second_field_$main_field_fk')
-      ->on('$main_table')->references('id');
+    Schema::table('$second_table', function (Blueprint $table) {
+        $table->unsignedBigInteger('$main_field_id')->nullable();
+        $table->index('$main_field_id', '$second_field_$main_field_idx');
+        $table->foreign('$main_field_id', '$second_field_$main_field_fk')
+          ->on('$main_table')->references('id');
+    });
+  ```
+
+- [ ] В !!ведомой!! миграции в методе down вставляем вдобавок: 
+  ```
+    Schema::table('$second_table', function (Blueprint $table) {
+        //
+        $table->dropForeign('$second_field_$main_field_fk');
+        $table->dropIndex('$second_field_$main_field_idx');
+        $table->dropColumn('$main_field_id');
+    });
   ```
   
 - [ ] Выполняем миграции
