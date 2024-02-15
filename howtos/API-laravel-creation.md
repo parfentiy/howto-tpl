@@ -62,80 +62,92 @@ variables:
     use App\Http\Resources\$model\$modelResource;
     use App\Http\Resources\$model\IndexResource;
     use App\Models\$model;
-    use Illuminate\Support\Facades\Validator;
   ```
   
 - [ ] там же в метод index следующую конструкцию
   ```
-    $data = $model::orderBy('id', 'DESC')->paginate(15);
+   public function index()
+    {
+        $data = $model::orderBy('id', 'DESC')->paginate(15);
 
-    return IndexResource::collection($data);  
-  ```
-
-- [ ] там же в метод store следующую конструкцию
-  ```
-    $validator = Validator::make(request()->all(), [
-        'title' => 'required',
-        'description' => 'required',
-        // .... остальные поля
-    ]);
-
-    // Проверяем успешность валидации
-    if ($validator->passes()) {
-        $input = $request->all();
-        $obj = $model::create($input);
-
-        return new IndexResource($obj);
-    } else {
-      // Обработка ошибок валидации
-      $errors = $validator->errors();
-      // TODO: дальнейшая логика обработки ошибок валидации
-
-      return abort('403');
-    } 
-  ```
-
-- [ ] там же в метод show следующую конструкцию
-  ```
-    $obj = $model::find($id);
-
-    return new $modelResource($obj);
-  ```
-
-- [ ] там же в метод update следующую конструкцию
-  ```
-    $obj = $model::find($id);
-
-    // Валидация
-    $validator = Validator::make(request()->all(), [
-        'title' => 'required',
-        'description' => 'required',
-        // .... остальные поля
-    ]);
-
-    // Проверяем успешность валидации
-    if ($validator->passes()) {
-        $input = $request->all();
-        $obj->update($input);
-
-        return new IndexResource($obj);
-
-    } else {
-        // Обработка ошибок валидации
-        $errors = $validator->errors();
-        // TODO: дальнейшая логика обработки ошибок валидации
-
-        return abort('403');
+        return IndexResource::collection($data);
     }
-  ```
 
-- [ ] там же в метод destroy следующую конструкцию
-  ```
-    $obj = $model::withTrashed()->find($id);
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreRequest $request
+     * @return Response
+     */
+    public function store(StoreRequest $request)
+    {
+        $input = $request->all();
+        $data = $model::create($input);
+        return new IndexResource($data);
+    }
 
-    $obj->forceDelete();
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $data = $this->findModel($id);
 
-    return response()->json(['message' => 'delete']);
+        return new $modelResource($data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(StoreRequest $request, $id)
+    {
+        $data = $this->findModel($id);
+
+        $input = $request->all();
+        $data->update($input);
+
+        return new IndexResource($data);
+   }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id): \Illuminate\Http\JsonResponse
+    {
+        $data = $this->findModelWithTrashed($id);
+
+        $data->forceDelete();
+
+        return response()->json(['message' => 'delete']);
+    }
+
+    private function findModel($id)
+    {
+        $data = $model::find($id);
+        if (!$data) {
+            return abort(404, 'Model not found.');
+        }
+        return $data;
+    }
+
+    private function findModelWithTrashed($id)
+    {
+        $data = $model::withTrashed()->find($id);
+        if (!$data) {
+            return abort(404, 'Model not found.');
+        }
+        return $data;
+    }
   ```
 
 # Наполнение ресурсов
