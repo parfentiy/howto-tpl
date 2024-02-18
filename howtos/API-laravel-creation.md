@@ -68,6 +68,11 @@ variables:
   
 - [ ] там же в метод index следующую конструкцию
   ```
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
    public function index()
     {
         $data = $model::orderBy('id', 'DESC')->paginate(15);
