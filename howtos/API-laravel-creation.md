@@ -62,6 +62,8 @@ variables:
     use App\Http\Resources\$model\$modelResource;
     use App\Http\Resources\$model\IndexResource;
     use App\Models\$model;
+    use App\Http\Requests\API\$model\StoreRequest;
+    use Illuminate\Http\Response;
   ```
   
 - [ ] там же в метод index следующую конструкцию
@@ -173,6 +175,8 @@ variables:
         // ... прочие поля по необходимости
     ];
   ```
+
+ - [ ] В StoreRequest.php метод authorize закомментировать
 
 # Наполнение файла routes/api.php
 
