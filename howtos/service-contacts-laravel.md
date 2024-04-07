@@ -106,7 +106,7 @@ variables:
     touch app/Contracts/Services/$service_folder/$service_nameService.php
   ```
 
-  - [ ] Вписываем в него
+- [ ] Вписываем в него
   ```
     <?php
 
