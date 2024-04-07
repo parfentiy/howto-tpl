@@ -33,7 +33,7 @@ variables:
 
 - [ ] Если еще нет еще своего сервис-провайдера, создаем его
   ```
-    php artisan make:provider $service_nameServiceProvider
+    php artisan make:provider $provider_nameServiceProvider
   ```
 Файл сервис-провайдера создается в папке app/Providers/$provider_nameServiceProvider.php
 
@@ -56,7 +56,7 @@ variables:
 
 - [ ] Регистрируем сервис провайдер в файле config\app.php. Добавляем в раздел 'providers' строчку:
   ```
-    App\Providers\$service_nameServiceProvider::class,
+    App\Providers\$provider_nameServiceProvider::class,
   ```
 
   # Создание и регистрация сервиса
@@ -92,7 +92,7 @@ variables:
 
 - [ ] В register() добавляем:
   ```
-    $this->app->singleton(ServiceContracts\$serviceNameService::class, $service_nameService::class);
+    $this->app->singleton(ServiceContracts\$service_nameService::class, $service_nameService::class);
   ```
 
 - [ ] В provides() добавляем:
@@ -103,8 +103,9 @@ variables:
   # Создание и заполнение контракта
   - [ ] Создаем сервис
   ```
-    touch app/Contracts/$service_folder/$service_nameService.php
+    touch app/Contracts/Services/$service_folder/$service_nameService.php
   ```
+  
   - [ ] Вписываем в него
   ```
     <?php
