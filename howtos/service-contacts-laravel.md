@@ -22,7 +22,7 @@ variables:
   controller_variable:
     description: Имя переменной, используемой в контроллере, по имени сервиса, но с маленькой буквы
     required: true
-    example: mkdService
+    example: mkdSeederService
     
 ---
 
@@ -126,10 +126,10 @@ variables:
 
 - [ ] В соответствующем методе контролеера добавляем 
   ```
-    public function index(MkdSeederRequest $request, $service_nameService $$controller_variableService): JsonResponse
+    public function index(MkdSeederRequest $request, $service_nameService $$controller_variable): JsonResponse
     {
         $fields = $request->validated();
-        $success = $$controller_variableService->$service_method($fields);
+        $success = $$controller_variable->$service_method($fields);
     
         return response()->json(['success' => $success]);
 
