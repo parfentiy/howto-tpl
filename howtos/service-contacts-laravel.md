@@ -101,7 +101,7 @@ variables:
   ```
 
   # Создание и заполнение контракта
-  - [ ] Создаем сервис
+- [ ] Создаем сервис
   ```
     touch app/Contracts/Services/$service_folder/$service_nameService.php
   ```
