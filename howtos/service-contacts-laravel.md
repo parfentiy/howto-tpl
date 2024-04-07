@@ -119,12 +119,12 @@ variables:
   ```
 
   # Вызов сервиса из контроллера и прочих мест
-  - [ ] В разделе use добавляем 
+- [ ] В разделе use добавляем 
   ```
     use App\Services\Seeders\$service_nameService;
   ```
 
-  - [ ] В соответствующем методе контролеера добавляем 
+- [ ] В соответствующем методе контролеера добавляем 
   ```
     public function index(MkdSeederRequest $request, $service_nameService $$controller_variableService): JsonResponse
     {
@@ -134,5 +134,4 @@ variables:
         return response()->json(['success' => $success]);
 
     }
-
   ```
