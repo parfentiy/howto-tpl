@@ -16,7 +16,7 @@ variables:
     required: true
     example: Seeders
   service_method:
-    description: Название первого методв сервиса
+    description: Название первого метода сервиса
     required: true
     example: index
   controller_variable:
@@ -88,7 +88,7 @@ variables:
     }
   ```
 
-Регистрируем его в сервис-провайдере app/Providers\$service_nameServiceProvider 
+Регистрируем его в сервис-провайдере app/Providers/$provider_nameServiceProvider 
 - [ ] В use, в разделе use App\Services\{ добавляем:
   ```
     $service_folder\$service_nameService,
@@ -128,7 +128,7 @@ variables:
     use App\Services\Seeders\$service_nameService;
   ```
 
-- [ ] В соответствующем методе контролеера добавляем 
+- [ ] В соответствующем методе контроллера добавляем 
   ```
     public function index($service_nameRequest $request, $service_nameService $$controller_variable): JsonResponse
     {
