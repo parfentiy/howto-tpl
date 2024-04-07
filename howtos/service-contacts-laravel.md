@@ -27,7 +27,11 @@ variables:
 ---
 
 # Предварительно
-- [ ] Заполняем имя сервиса <var>service_name</var>
+- [ ] Заполняем название провайдера <var>provider_name</var>
+- [ ] Заполняем название сервиса <var>service_name</var>
+- [ ] Заполняем название папки сервиса <var>service_folder</var>
+- [ ] Заполняем название первого метода в сервисе <var>service_method</var>
+- [ ] Заполняем имя переменной, используемой в контроллере <var>controller_variable</var>
 
 # Создание и регистрация сервис-провайдера
 
@@ -126,7 +130,7 @@ variables:
 
 - [ ] В соответствующем методе контролеера добавляем 
   ```
-    public function index(MkdSeederRequest $request, $service_nameService $$controller_variable): JsonResponse
+    public function index($service_nameRequest $request, $service_nameService $$controller_variable): JsonResponse
     {
         $fields = $request->validated();
         $success = $$controller_variable->$service_method($fields);
