@@ -175,7 +175,7 @@ variables:
 - [ ] В разделе use добавляем 
   ```
     use App\Services\$service_folder\$service_nameService;
-    use App\Http\Requests\API\$service_folder\$service_folderRequest;
+    use App\Http\Requests\API\$service_name\$service_nameRequest;
   ```
 
 - [ ] В соответствующем методе контроллера добавляем 
