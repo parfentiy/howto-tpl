@@ -130,51 +130,52 @@ variables:
     touch app/Http/Requests/API/$service_name/$service_nameRequest.php
   ```
 
-  - [ ] Вписываем в него
-    ```
-      <?php
+- [ ] Вписываем в него
+  ```
+    <?php
 
-      namespace App\Http\Requests\API\$service_name;
+    namespace App\Http\Requests\API\$service_name;
 
-      use Illuminate\Foundation\Http\FormRequest;
+    use Illuminate\Foundation\Http\FormRequest;
 
-      class $service_nameRequest extends FormRequest
-      {
-          /**
-          * Get the validation rules that apply to the request.
-          *
-          * @return array
-          */
-          public function rules(): array
-          {
-              return [
-                // пример валидирования входных данных
-                  'data' => 'nullable|json',
-                  'template_settings' => 'nullable|json',
-                  'model_name' => 'required|string|max:255',
-              ];
-          }
+    class $service_nameRequest extends FormRequest
+    {
+        /**
+        * Get the validation rules that apply to the request.
+        *
+        * @return array
+        */
+        public function rules(): array
+        {
+            return [
+              // пример валидирования входных данных
+                'data' => 'nullable|json',
+                'template_settings' => 'nullable|json',
+                'model_name' => 'required|string|max:255',
+            ];
+        }
 
-          public function messages()
-          {
-              return [
-                // это пример описания сообщений в случае непрохождения валидации
-                  'data.nullable' => 'Поле "data" должно быть в формате JSON или может быть пустым',
-                  'data.json' => 'Поле "data" должно быть в формате JSON или может быть пустым',
-                  'template_settings.nullable' => 'Поле "template_settings" должно быть в формате JSON или может быть пустым',
-                  'template_settings.json' => 'Поле "template_settings" должно быть в формате JSON или может быть пустым',
-                  'model_name.required' => 'Поле "model" обязательно для заполнения',
-                  'model_name.string' => 'Поле "model" должно быть строкой',
-                  'model_name.max' => 'Поле "model" не должно превышать 255 символов',
-              ];
-          }
-      }
-    ```
+        public function messages()
+        {
+            return [
+              // это пример описания сообщений в случае непрохождения валидации
+                'data.nullable' => 'Поле "data" должно быть в формате JSON или может быть пустым',
+                'data.json' => 'Поле "data" должно быть в формате JSON или может быть пустым',
+                'template_settings.nullable' => 'Поле "template_settings" должно быть в формате JSON или может быть пустым',
+                'template_settings.json' => 'Поле "template_settings" должно быть в формате JSON или может быть пустым',
+                'model_name.required' => 'Поле "model" обязательно для заполнения',
+                'model_name.string' => 'Поле "model" должно быть строкой',
+                'model_name.max' => 'Поле "model" не должно превышать 255 символов',
+            ];
+        }
+    }
+  ```
 
   # Вызов сервиса из контроллера и прочих мест
 - [ ] В разделе use добавляем 
   ```
     use App\Services\$service_folder\$service_nameService;
+    use App\Http\Requests\API\$service_folder\$service_folderRequest;
   ```
 
 - [ ] В соответствующем методе контроллера добавляем 
