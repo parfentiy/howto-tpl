@@ -67,10 +67,11 @@ variables:
 
 - [ ] Создаем сервис
   ```
+    mkdir app/Services/$service_folder
     touch app/Services/$service_folder/$service_nameService.php
   ```
 
-- В созданном файле прописываем
+- [ ] В созданном файле прописываем
   ```
     <?php
 
@@ -81,7 +82,7 @@ variables:
     class $service_nameService implements $service_nameContract
     {
 
-        public function $service_method(array $arguments): bool
+        public function $service_method(array $fields): bool
         {
 
         }
@@ -89,7 +90,7 @@ variables:
   ```
 
 Регистрируем его в сервис-провайдере app/Providers/$provider_nameServiceProvider 
-- [ ] В use, в разделе use App\Services\{ добавляем:
+- [ ] В use, в разделе use App\Services\ { добавляем:
   ```
     $service_folder\$service_nameService,
   ```
@@ -105,8 +106,9 @@ variables:
   ```
 
   # Создание и заполнение контракта
-- [ ] Создаем сервис
+- [ ] Создаем контракт
   ```
+    mkdir app/Contracts/Services/$service_folder
     touch app/Contracts/Services/$service_folder/$service_nameService.php
   ```
 
@@ -125,7 +127,7 @@ variables:
   # Вызов сервиса из контроллера и прочих мест
 - [ ] В разделе use добавляем 
   ```
-    use App\Services\Seeders\$service_nameService;
+    use App\Services\$service_folder\$service_nameService;
   ```
 
 - [ ] В соответствующем методе контроллера добавляем 
